@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>A Warm Hug — For You</title>
+  <meta name="description" content="A cozy, pastel, premium website to cheer up my wife — floating hearts, love note, virtual hug, and playful mini-games." />
+  <style>
+    :root{
+      --bg-1: #fff7fb;
+      --bg-2: #fff1f9;
+      --accent-1: #ff9ac2;
+      --accent-2: #cdb4ff;
+      --accent-3: #ffd6a5;
+      --muted: #58464e;
+      --glass: rgba(255,255,255,0.48);
+      --glass-border: rgba(255,255,255,0.7);
+      --shadow: rgba(60,30,60,0.12);
+      --max-width: 1080px;
+      --radius-lg: 22px;
+      --radius-sm: 10px;
+      --ease: cubic-bezier(.2,.9,.2,1);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color:var(--muted);
+      background: linear-gradient(160deg,var(--bg-1),var(--bg-2) 60%);
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+      line-height:1.45;
+    }
+
+    .page{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:48px 20px;}
+    .container{width:min(var(--max-width),100%); margin:0 auto; display:grid; grid-template-columns: 420px 1fr; gap:28px; align-items:start;}
+    @media (max-width:980px){.container{grid-template-columns:1fr; padding-bottom:120px}}
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.62), rgba(255,255,255,0.52));
+      border-radius: var(--radius-lg);
+      padding:26px;
+      box-shadow: 0 20px 50px var(--shadow);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(10px) saturate(120%);
+      overflow:clip;
+      position:relative;
+      transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+    }
+    .card:hover{ transform: translateY(-6px); box-shadow: 0 30px 70px rgba(70,30,70,0.15) }
+
+    .profile{ display:flex; gap:16px; align-items:center; margin-bottom:6px; }
+    .avatar{
+      width:96px; height:96px; border-radius:18px; display:grid; place-items:center;
+      font-size:44px; color:white; background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
+      box-shadow:0 10px 30px rgba(200,120,160,0.12); border: 1px solid rgba(255,255,255,0.6);
+    }
+    .greet h1{ margin:0; font-size:22px; letter-spacing:-0.4px; color:#402532; text-shadow: 0 6px 18px rgba(255,150,180,0.06);}
+    .greet p{margin:6px 0 0; color: #6a4f59}
+
+    .distance-badge{
+      display:inline-block; margin-top:12px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));
+      padding:6px 12px; border-radius:999px; font-weight:600; color:#472a34;
+      box-shadow: 0 6px 18px rgba(200,120,160,0.06); border:1px solid rgba(255,255,255,0.5);
+    }
+
+    .controls{display:flex; gap:12px; margin-top:16px; flex-wrap:wrap}
+    .btn{
+      appearance:none; border:0; padding:10px 14px; border-radius:12px;cursor:pointer;
+      font-weight:700; font-size:14px;
+      transition: transform .18s var(--ease), box-shadow .18s var(--ease), background .18s var(--ease);
+      box-shadow: 0 8px 24px rgba(200,120,160,0.08);
+    }
+    .btn-primary{ background: linear-gradient(90deg,var(--accent-1),var(--accent-2)); color:white; }
+    .btn-ghost{ background:transparent; border:1px solid rgba(60,30,40,0.06); color:var(--muted)}
+    .btn:active{ transform:translateY(1px) }
+
+    .main{ position:relative; padding:18px; display:flex; flex-direction:column; gap:20px; }
+
+    .hero-large{
+      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.62));
+      border-radius:16px; padding:22px; box-shadow: 0 20px 50px rgba(80,40,80,0.06); border:1px solid rgba(255,255,255,0.6);
+    }
+    .hero-title{ font-size:28px; color:#4b2f36; margin:0; letter-spacing:-0.2px; }
+    .hero-sub{ color:#6b565f; margin:8px 0 0 }
+
+    .notes-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; margin-top:14px }
+    @media (max-width:980px){ .notes-grid{ grid-template-columns:1fr } }
+    .note-card{ background:linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.7)); padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.6); box-shadow: 0 8px 20px rgba(80,30,70,0.04); }
+    .note-card h3{ margin:0 0 6px; font-size:15px }
+    .note-card p{ margin:0; color: #6b565f }
+
+    .decor-layer{ position: absolute; inset:0; pointer-events:none; overflow:hidden; z-index:0 }
+    .decor{ position:absolute; will-change:transform,opacity }
+    .glow-heart{ font-size:36px; filter:drop-shadow(0 8px 18px rgba(255,140,180,0.18)); opacity:0.95 }
+    .petal{ font-size:28px; opacity:0.9 }
+    .tiny-star{ font-size:12px; opacity:0.9; filter: drop-shadow(0 6px 12px rgba(255,255,255,0.4)) }
+    @keyframes riseSlow { 0%{ transform: translateY(80vh) rotate(0deg); opacity:0 } 10%{opacity:1} 100%{ transform: translateY(-20vh) rotate(360deg); opacity:0 } }
+    @keyframes floaty { 0%{ transform: translateY(0) } 50%{ transform: translateY(-6px) } 100%{ transform: translateY(0) } }
+
+    .overlay{ position:fixed; inset:0; display:grid; place-items:center; background: linear-gradient(180deg, rgba(10,8,10,0.32), rgba(255,255,255,0.02)); opacity:0; pointer-events:none; transition: opacity 220ms ease; z-index:80 }
+    .overlay.open{ opacity:1; pointer-events:auto }
+    .modal{ width:min(820px,94%); background: linear-gradient(180deg, #fff, #fff8fa); border-radius:16px; padding:26px; box-shadow: 0 30px 80px rgba(80,40,80,0.14); border:1px solid rgba(255,255,255,0.7); }
+    .modal header{ display:flex; align-items:center; justify-content:space-between; gap:12px }
+    .modal h2{ margin:0; font-size:20px }
+    .close-x{ cursor:pointer; background:transparent; border:0; font-size:22px; color:#a44 }
+    .love-letter{ font-family: 'Georgia', serif; color:#3a1f25; line-height:1.6 }
+
+    .game-card{ background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.82)); padding:18px; border-radius:12px; border:1px solid rgba(255,255,255,0.7); box-shadow: 0 12px 30px rgba(80,40,80,0.06) }
+    .game-area{ height:140px; position:relative; background: linear-gradient(180deg, rgba(255,245,250,0.6), rgba(255,250,245,0.6)); border-radius:10px; overflow:hidden }
+    .game-love{ position:absolute; font-size:34px; cursor:pointer; transition: transform .15s ease }
+    .game-score{ margin-top:10px; font-weight:700; color:#5a2a3b }
+
+    @media(max-width:640px){ .avatar{ width:72px; height:72px; font-size:28px } .hero-title{ font-size:20px } }
+    .pulse{ animation: pulse .9s ease } @keyframes pulse { 0%{ transform: scale(1) } 50%{ transform: scale(1.06) } 100%{ transform: scale(1) } }
+    .ribbon{ position:absolute; width:240px; height:80px; right:-40px; top:-20px; transform:rotate(12deg); opacity:0.65 }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="container">
+      <section class="card" aria-labelledby="profileTitle">
+        <div class="profile">
+          <div class="avatar" aria-hidden="true">💞</div>
+          <div class="greet">
+            <h1 id="profileTitle">Hey Love — You’re Strong and Beautiful 💕</h1>
+            <p>A little corner of love, just for you!</p>
+          </div>
+        </div>
+        <div class="distance-badge">Distance: Always Together 💖</div>
+        <div class="controls">
+          <button class="btn btn-primary" onclick="openModal('letterModal')">Open Love Letter</button>
+          <button class="btn btn-ghost" onclick="startGame()">Play Mini Love Game</button>
+        </div>
+      </section>
+
+      <section class="main">
+        <div class="hero-large">
+          <h2 class="hero-title">Your Cozy Surprise</h2>
+          <p class="hero-sub">Floating hearts, roses, and little love animations await you.</p>
+          <div class="notes-grid">
+            <div class="note-card">
+              <h3>Teddy Day</h3>
+              <p>Click to see a teddy pop out of a box!</p>
+            </div>
+            <div class="note-card">
+              <h3>Chocolate Day</h3>
+              <p>A sweet surprise for your sweet heart 🍫</p>
+            </div>
+            <div class="note-card">
+              <h3>Flower Day</h3>
+              <p>Roses falling from above 🌹</p>
+            </div>
+            <div class="note-card">
+              <h3>Promise Day</h3>
+              <p>A gentle promise floating for you 💌</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Decorative Hearts & Petals -->
+  <div class="decor-layer" id="decorLayer"></div>
+
+  <!-- Love Letter Modal -->
+  <div class="overlay" id="letterModal">
+    <div class="modal">
+      <header>
+        <h2>My Heartfelt Letter 💖</h2>
+        <button class="close-x" onclick="closeModal('letterModal')">&times;</button>
+      </header>
+      <div class="love-letter">
+        <p>My love, every little moment with you feels magical. You are my strength, my joy, and the smile that brightens my day. May this little surprise wrap you in warmth and happiness!</p>
+        <p>Always yours, <br>💞 Your Sweetheart</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mini Love Game Modal -->
+  <div class="overlay" id="gameModal">
+    <div class="modal">
+      <header>
+        <h2>Catch the Hearts Game ❤️</h2>
+        <button class="close-x" onclick="closeModal('gameModal')">&times;</button>
+      </header>
+      <div class="game-card">
+        <div class="game-area" id="gameArea"></div>
+        <div class="game-score">Score: <span id="score">0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Decorations
+    const decorLayer = document.getElementById('decorLayer');
+    const hearts = ['💖','💞','💕','🌹','🌸','💌'];
+    function createDecor(){
+      for(let i=0;i<30;i++){
+        const span=document.createElement('span');
+        span.className = 'decor';
+        span.style.left=Math.random()*100+'vw';
+        span.style.top=100+Math.random()*40+'vh';
+        span.style.fontSize=(16+Math.random()*28)+'px';
+        span.innerText=hearts[Math.floor(Math.random()*hearts.length)];
+        span.style.animation = `riseSlow ${8+Math.random()*6}s linear infinite`;
+        decorLayer.appendChild(span);
+      }
+    }
+    createDecor();
+
+    // Modals
+    function openModal(id){ document.getElementById(id).classList.add('open') }
+    function closeModal(id){ document.getElementById(id).classList.remove('open') }
+
+    // Mini Love Game
+    let gameInterval, score=0;
+    function startGame(){
+      score=0;
+      document.getElementById('score').innerText=score;
+      const gameArea=document.getElementById('gameArea');
+      gameArea.innerHTML='';
+      openModal('gameModal');
+
+      function spawnHeart(){
+        const heart=document.createElement('div');
+        heart.className='game-love';
+        heart.innerText=hearts[Math.floor(Math.random()*hearts.length)];
+        heart.style.left=Math.random()*(gameArea.clientWidth-40)+'px';
+        heart.style.top='0px';
+        gameArea.appendChild(heart);
+
+        let top=0;
+        const moveInterval=setInterval(()=>{
+          top+=2+Math.random()*2;
+          heart.style.top=top+'px';
+          if(top>=gameArea.clientHeight-24){
+            clearInterval(moveInterval);
+            gameArea.removeChild(heart);
+          }
+        },20);
+
+        heart.onclick=()=>{
+          score++; document.getElementById('score').innerText=score;
+          clearInterval(moveInterval);
+          gameArea.removeChild(heart);
+        }
+      }
+
+      gameInterval=setInterval(spawnHeart,700);
+      setTimeout(()=>{ clearInterval(gameInterval) },30000);
+    }
+  </script>
+</body>
+</html>
